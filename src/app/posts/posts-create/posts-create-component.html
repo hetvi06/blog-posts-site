@@ -1,0 +1,19 @@
+<!--
+  <textarea rows="6" [value]="'Enter Text'" #postInput></textarea>
+  [value] is known as property binding
+  <hr>
+  <button (click)="onClickButtonSavePost(postInput)">Save Post</button>
+   (click) is the event listener
+  <p>{{newPost}}</p>
+  <!-- {{ is string interpolation}}
+-->
+<!-- Two way binding using ngModel-->
+<mat-card>
+  <mat-form-field>
+    <input matInput type="text" [(ngModel)]="enteredTitle">
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput rows="6" [(ngModel)]="enteredContent"></textarea>
+  </mat-form-field>
+  <button mat-raised-button color='primary' (click)="onClickButtonSavePost()">Save Post</button>
+</mat-card>
