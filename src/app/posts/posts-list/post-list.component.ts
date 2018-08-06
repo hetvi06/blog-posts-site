@@ -1,5 +1,7 @@
 import { Component, Input } from '@angular/core';
 import {Post} from './../post.model';
+import {PostService} from '../posts.service';
+
 @Component({
   selector: 'app-posts-list',
   templateUrl: './posts-list.component.html',
@@ -21,4 +23,11 @@ export class PostsListComponent {
   //   }
   // ];
   @Input() posts:Post[] = [];
+
+  constructor(public postService: PostService){
+    //saying public postService: PostService is equivalent to setting the value of a local variable postService
+    //to the incoming parameter postService
+    // we save the step of this.postService=postService
+
+  }
 }
