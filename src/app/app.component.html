@@ -1,6 +1,10 @@
 <app-header></app-header>
 <main>
+    <!-- before using services i.e. by using event binders and emitters
     <app-posts-create (postCreatedEvent)="onPostAdded($event)"></app-posts-create>
-    <app-posts-list [posts]="storedPosts"></app-posts-list>
+    <app-posts-list [posts]="storedPosts"></app-posts-list> -->
+    <!-- By using services -->
+    <app-posts-create></app-posts-create>
+    <app-posts-list></app-posts-list>
 </main>
 
