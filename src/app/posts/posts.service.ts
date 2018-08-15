@@ -5,23 +5,31 @@
 
 import {Post} from './post.model';
 import { Injectable } from '../../../node_modules/@angular/core';
+import {Subject} from 'rxjs';
 
 @Injectable({providedIn:'root'})
-export class PostService{
+export class PostsService{
   private posts:Post[]=[];
+  private postsUpdated=new Subject<Post[]>();
+
   //getter
-  getPost(){
-    return [...this.posts];
+  getPosts(){
+    return this.posts;
     // JS objects and arrays are pass by reference so if i return just the array then the address is returned
     // not the values and thus we use the spread operator [...array_name]
     // this creates a copy of the original array
     // we also do this because we dont want outside elements to edit the posts variable in this class and thus working on a copy is safe.
   }
 
+  getPostUpdatedListener(){
+    return this.postsUpdated.asObservable();
+  }
+
   //setter
-  addPost(title:string, content:string){
+  addPosts(title:string, content:string){
     const post:Post={title:title, content:content};
     this.posts.push(post);
+    this.postsUpdated.next([...this.posts]);
   }
 
   //now we have this service that can be used to transfer data between different components
