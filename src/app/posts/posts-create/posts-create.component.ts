@@ -36,5 +36,6 @@ export class PostsCreateComponent {
     // this.postCreatedEvent.emit(post); //not using emitter anymore
     // now using service
     this.postsService.addPosts(postForm.value.titleInput, postForm.value.contentInput)
+    postForm.reset();
   }
 }
