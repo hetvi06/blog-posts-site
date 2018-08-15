@@ -6,19 +6,29 @@
 import {Post} from './post.model';
 import { Injectable } from '../../../node_modules/@angular/core';
 import {Subject} from 'rxjs';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({providedIn:'root'})
 export class PostsService{
   private posts:Post[]=[];
   private postsUpdated=new Subject<Post[]>();
 
+  constructor(private httpClient: HttpClient){
+
+  }
+
   //getter
   getPosts(){
-    return this.posts;
+    // return this.posts;
     // JS objects and arrays are pass by reference so if i return just the array then the address is returned
     // not the values and thus we use the spread operator [...array_name]
     // this creates a copy of the original array
     // we also do this because we dont want outside elements to edit the posts variable in this class and thus working on a copy is safe.
+    this.httpClient.get<{message:string,posts:Post[]}>('http://localhost:3000/api/posts')
+    .subscribe((postDataFromServer)=>{
+      this.posts=postDataFromServer.posts;
+      this.postsUpdated.next([...this.posts]);
+    });
   }
 
   getPostUpdatedListener(){
@@ -27,7 +37,7 @@ export class PostsService{
 
   //setter
   addPosts(title:string, content:string){
-    const post:Post={title:title, content:content};
+    const post:Post={id: null, title:title, content:content};
     this.posts.push(post);
     this.postsUpdated.next([...this.posts]);
   }

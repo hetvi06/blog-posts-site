@@ -36,7 +36,7 @@ export class PostsListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.posts=this.postService.getPosts();
+    this.postService.getPosts();
      // subscribe is used to listen to the observable that is returned by getPostUpdatedListener()
      // subsrcibe can take 3 arguments..all 3 functions
      // here we shall only use 1st function argument which is executed when new data is emitted.
