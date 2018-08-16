@@ -38,8 +38,14 @@ export class PostsService{
   //setter
   addPosts(title:string, content:string){
     const post:Post={id: null, title:title, content:content};
-    this.posts.push(post);
-    this.postsUpdated.next([...this.posts]);
+    //the variable post defined in above line is the second parameter
+    this.httpClient.post<{message:string}>("http://localhost:3000/api/posts",post)
+    .subscribe((responseData)=>{
+      console.log(responseData);
+      this.posts.push(post);
+      this.postsUpdated.next([...this.posts]);
+    });
+
   }
 
   //now we have this service that can be used to transfer data between different components

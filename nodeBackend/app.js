@@ -1,4 +1,5 @@
 const express=require('express');
+const bodyParser=require('body-parser');
 
 const app=express();
 
@@ -9,6 +10,10 @@ app.use((req,res,next)=>{
   next();
 });
 
+app.use(bodyParser.json());
+//extra line for to show body parser can also parse url encoded data
+// app.use(bodyParser.urlencoded({extended:false}));
+
 // app.use((req,res,next)=>{ //next() will continue its journey and the next app.use/code will be executed
 //   console.log('First Middleware');
 //   next();
@@ -17,6 +22,12 @@ app.use((req,res,next)=>{
 // app.use((req,res)=>{
 //   res.send('Hello from express!');
 // });
+
+  app.post("/api/posts",(req,res,next)=>{
+    const post=req.body;
+    console.log(post);
+    res.status(201).json({message:'Post Recorded'}); //201 everything is ok and 'resource is created'
+  });
 
 app.use('/api/posts',(req,res,next)=>{ //using /api just to denote that this is a REST API. but its optional
   const posts=[
