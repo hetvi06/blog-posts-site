@@ -32,7 +32,11 @@ export class PostsListComponent implements OnInit, OnDestroy {
     //saying public postService: PostService is equivalent to setting the value of a local variable postService
     //to the incoming parameter postService
     // we save the step of this.postService=postService
+  }
 
+  onDelete(postId:string){
+    console.log('I am here in postlistcomponent.ts and is '+postId);
+    this.postService.deletePost(postId);
   }
 
   ngOnInit() {

@@ -7,6 +7,7 @@ import {Post} from './post.model';
 import { Injectable } from '../../../node_modules/@angular/core';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {map} from 'rxjs/operators';
 
 @Injectable({providedIn:'root'})
 export class PostsService{
@@ -24,9 +25,23 @@ export class PostsService{
     // not the values and thus we use the spread operator [...array_name]
     // this creates a copy of the original array
     // we also do this because we dont want outside elements to edit the posts variable in this class and thus working on a copy is safe.
-    this.httpClient.get<{message:string,posts:Post[]}>('http://localhost:3000/api/posts')
-    .subscribe((postDataFromServer)=>{
-      this.posts=postDataFromServer.posts;
+    this.httpClient.get<{message:string,posts:any}>('http://localhost:3000/api/posts')
+    // we use pipe to change the _id we get from mongodb to just id which we want
+    .pipe(map((postData)=>{
+      return postData.posts.map(post=>{
+        return{
+          title:post.title,
+          content:post.content,
+          id:post._id
+        }
+      })
+    }))
+    // .subscribe((postDataFromServer)=>{ //this commented block was before we used pipe/map
+    //   this.posts=postDataFromServer.posts;
+    //   this.postsUpdated.next([...this.posts]);
+    // });
+    .subscribe(transformedPosts=>{
+      this.posts=transformedPosts;
       this.postsUpdated.next([...this.posts]);
     });
   }
@@ -45,6 +60,15 @@ export class PostsService{
       this.posts.push(post);
       this.postsUpdated.next([...this.posts]);
     });
+    }
+
+    deletePost(postId:string){
+      console.log('First line of post service delete and id is '+postId);
+      this.httpClient.delete("http://localhost:3000/api/posts/"+postId)
+      .subscribe(()=>{
+        console.log('Deleted from service.ts');
+      });
+    }
 
   }
 
@@ -55,4 +79,3 @@ export class PostsService{
   // 1. add PostService to the provider array (provider array is for services) in app.component.ts and also import it
   // 2. add @injectablr to this class, import injectable as well as done above.
   // the providedIn:'root' makes sure that this service is available at root level.
-}

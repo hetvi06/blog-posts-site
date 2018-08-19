@@ -45,6 +45,15 @@ app.use(bodyParser.json());
     // res.status(201).json({message:'Post Recorded'}); //201 everything is ok and 'resource is created'
   });
 
+  app.delete('/api/posts/:postId',(req,res,next)=>{
+    console.log('I am Here in app.js');
+    // console.log(req.params);
+    Post.deleteOne({_id:req.params.id}).then(result=>{
+      console.log(result);
+      res.status(200).json({message:'Deleted from app.js'});
+    });
+  });
+
 app.use('/api/posts',(req,res,next)=>{ //using /api just to denote that this is a REST API. but its optional
   // mongoose schema object also provides method to find/fetch the posts
   Post.find().then((fetchedPostsFromDB)=>{
@@ -59,6 +68,7 @@ app.use('/api/posts',(req,res,next)=>{ //using /api just to denote that this is 
     });
   });
 });
+
 
 
 //to bind this express app to the node server so as to use and execute all these functionalities
